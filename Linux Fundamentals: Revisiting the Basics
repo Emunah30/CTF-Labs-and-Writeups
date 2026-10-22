@@ -1,0 +1,42 @@
+Overview
+
+I went back to the basics to refresh my memory and strengthen my understanding of essential Linux commands, file operations, and shell behaviour.
+
+As I continue my cybersecurity journey, I believe revisiting foundational concepts is just as important as learning new techniques.
+
+Commands and Concepts Practised
+
+1. "ls" — Listing Files
+
+Used to inspect the current working directory and identify available files.
+
+2. ">" — Output Redirection
+
+Redirects standard output into a file. It can create a new file or overwrite an existing file's contents.
+
+3. "cat" — Viewing File Contents
+
+Used to display the contents of a file directly in the terminal and verify that the expected text was saved.
+
+4. Command Syntax and Spacing
+
+Linux commands must be entered with the correct syntax. For example, "echo learning" runs the "echo" command with an argument, whereas "echolearning" is interpreted as a different command name.
+
+5. Special Characters and Quoting
+
+I revisited how Bash handles special characters, particularly the exclamation mark ("!"), which can trigger history expansion when enabled. Single quotes can preserve literal text without triggering this expansion.
+
+Practical Workflow
+
+- Inspected the current directory using "ls".
+- Used output redirection (">") to write text into "practice.txt".
+- Used "cat" to verify the saved contents.
+- Reviewed command spacing and shell quoting behaviour.
+
+Key Takeaway
+
+Going back to the basics is not going backwards. It is an opportunity to reinforce knowledge, identify gaps, and build confidence in the skills I will rely on as I progress in cybersecurity.
+
+I'm committed to understanding the commands I use rather than simply memorising them.
+
+#Linux #LinuxFundamentals #Cybersecurity #CommandLine #ContinuousLearning
