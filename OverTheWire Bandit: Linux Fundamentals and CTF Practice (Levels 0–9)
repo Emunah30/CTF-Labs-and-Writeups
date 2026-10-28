@@ -1,0 +1,155 @@
+Overview
+
+I went back to the basics to refresh my memory, strengthen my Linux command-line skills, and improve my ability to solve problems independently.
+
+Through OverTheWire Bandit, I practised connecting to remote systems, inspecting files, handling unusual filenames, discovering hidden files, filtering search results, and processing text from the terminal.
+
+This repository documents my practical learning journey, the commands I explored, and the concepts I'm developing as I work toward a career in cybersecurity.
+
+Level 0: Connecting to a Remote Server
+
+Command:
+
+ssh bandit0@bandit.labs.overthewire.org -p 2220
+
+What I learned:
+
+- "ssh" establishes a secure remote shell connection.
+- "bandit0@..." specifies the username and remote host.
+- "-p 2220" specifies the server's SSH port.
+
+Level 0 → Level 1: Reading a File
+
+Commands:
+
+ls
+cat readme
+
+What I learned:
+
+- "ls" lists directory contents.
+- "cat" displays file contents in the terminal.
+
+Level 1 → Level 2: Handling a Filename That Is a Dash
+
+Command:
+
+cat ./-
+
+What I learned:
+
+A bare "-" can be interpreted specially by some commands, commonly as a reference to standard input or output. Using "./-" explicitly identifies a file named "-" in the current directory.
+
+Level 2 → Level 3: Filenames Containing Spaces
+
+Command:
+
+cat "spaces in this filename"
+
+What I learned:
+
+Quoting the filename keeps its spaces together as one argument. Escaping the spaces with backslashes is another option.
+
+Level 3 → Level 4: Discovering Hidden Files
+
+Command:
+
+ls -a
+
+What I learned:
+
+The "-a" option displays directory entries beginning with a dot, which ordinary "ls" output normally omits.
+
+Level 4 → Level 5: Identifying File Types
+
+Commands explored:
+
+ls -la
+file ./*
+
+What I learned:
+
+File sizes can provide useful clues, but size alone does not establish whether a file is human-readable. The "file" command examines file content and structure to help identify its type.
+
+Level 5 → Level 6: Searching with Specific Criteria
+
+Command:
+
+find . -type f -size 1033c
+
+What I learned:
+
+- "find ." searches from the current directory.
+- "-type f" selects regular files.
+- "-size 1033c" selects files exactly 1,033 bytes in size.
+
+Additional conditions, such as readability and non-executable permissions, may be needed to match every challenge requirement.
+
+Level 6 → Level 7: Searching Across the Filesystem
+
+Command:
+
+find / -user bandit7 -group bandit6 -size 33c 2>/dev/null
+
+What I learned:
+
+- "/" starts the search at the filesystem root.
+- "-user" and "-group" filter by file ownership.
+- "-size 33c" matches files that are 33 bytes.
+- "2>/dev/null" redirects standard error to "/dev/null", suppressing error messages such as permission-denied warnings.
+
+Level 7 → Level 8: Searching Text with grep
+
+Command:
+
+grep millionth data.txt
+
+What I learned:
+
+"grep" searches text for lines matching a specified pattern. It is useful for locating relevant information in large files without reading every line manually.
+
+Level 8 → Level 9: Sorting and Finding Unique Lines
+
+Command:
+
+sort data.txt | uniq -u
+
+What I learned:
+
+- "sort" arranges lines into sorted order.
+- "|" passes one command's standard output to another command.
+- "uniq -u" prints lines that occur only once in the sorted input.
+
+Sorting first is important because "uniq" normally detects adjacent duplicate lines rather than grouping identical lines throughout an unsorted file.
+
+Level 9 → Level 10: Extracting Readable Strings
+
+Command:
+
+strings data.txt | grep "=="
+
+What I learned:
+
+- "strings" extracts sequences of printable characters from a file.
+- "grep "=="" filters the extracted output for lines containing two consecutive equals signs.
+- The pipeline combines extraction and filtering into one workflow.
+
+Key Takeaways
+
+This practice helped me revisit:
+
+- SSH and remote access.
+- Linux file and directory operations.
+- Special filenames and quoting.
+- Hidden files and file identification.
+- Filesystem searching and metadata filters.
+- Text searching, sorting, and uniqueness.
+- Pipes, redirection, and readable-string extraction.
+
+My focus is to understand why commands work, recognise their limitations, and reproduce solutions independently rather than merely memorising them.
+
+Next steps: Continue practising, revisit challenging concepts, and document solutions with clear explanations and appropriate security awareness.
+
+Note: This document records the commands and concepts studied. Each command should be validated against the exact challenge requirements and environment.
+
+#OverTheWire #Bandit #Linux #CTF #Cybersecurity
