@@ -1,0 +1,163 @@
+CTF Practice, Linux Fundamentals, Cryptography and System SecurityOverview
+
+This section documents my reported learning journey through OverTheWire Bandit Levels 10–20. These challenges introduced me to data decoding, substitution ciphers, nested compression formats, SSH authentication, network services, TLS connections, port scanning, file comparison, restricted shells, and SetUID executables.
+
+My focus was not only on finding challenge credentials, but also on understanding the Linux tools, command syntax, and security concepts involved.
+
+Level 10 → 11: Base64 Decoding
+
+Command:
+
+base64 -d data.txt
+
+The "base64" utility encodes or decodes data using Base64 representation. The "-d" option requests decoding.
+
+Key lesson: Base64 is an encoding scheme, not encryption. It does not provide confidentiality, and decoding it does not require a secret cryptographic key.
+
+Level 11 → 12: ROT13 Substitution Cipher
+
+Command:
+
+cat data.txt | tr 'A-Za-z' 'N-ZA-Mn-za-m'
+
+The "cat" command prints the file contents. The pipe sends that output to "tr", which translates characters according to the two character sets.
+
+The translation rotates letters by 13 positions, implementing ROT13 for uppercase and lowercase English letters.
+
+Key lesson: ROT13 is a simple substitution transformation, not secure encryption. It is reversible by applying the same transformation again.
+
+Level 12 → 13: Nested Compression and File Identification
+
+Tools used:
+
+mkdir /tmp/myworkspace2026
+xxd -r
+file
+gunzip
+bzip2 -d
+tar -xf
+
+This challenge involved analysing data represented as a hexadecimal dump and repeatedly identifying and unpacking nested file formats.
+
+- "mkdir" creates a directory.
+- "xxd -r" reverses a hexadecimal dump into binary data.
+- "file" examines file content to identify its likely format.
+- "gunzip" decompresses gzip data.
+- "bzip2 -d" decompresses bzip2 data.
+- "tar -xf" extracts a tar archive.
+
+Key lesson: File extensions and filenames are not definitive evidence of file format. Examining file signatures and using "file" helps determine the appropriate next operation.
+
+Level 13 → 14: SSH Private-Key Authentication
+
+Tools used:
+
+cat sshkey.private
+chmod 600 bandit14_key
+
+The challenge introduced private-key-based SSH authentication.
+
+The "chmod 600" command gives the file owner read and write permissions while removing permissions from the group and others. Restrictive permissions help protect private keys and satisfy SSH client's security requirements.
+
+A private key should be handled carefully and never published in a public repository.
+
+Key lesson: SSH can authenticate using cryptographic key pairs rather than only passwords.
+
+Level 14 → 15: Connecting to a Local Network Service
+
+Command:
+
+nc localhost 30000
+
+Netcat ("nc") can establish network connections and exchange data with services. Here, "localhost" refers to the machine on which the command executes.
+
+Key lesson: A network service can accept application data over a TCP connection without requiring a browser or graphical interface.
+
+Level 15 → 16: TLS Connections with OpenSSL
+
+Command:
+
+openssl s_client -connect localhost:30001
+
+OpenSSL's "s_client" can establish and inspect TLS connections. The "-connect" option specifies the destination host and port.
+
+Unlike a plain TCP connection, a TLS connection negotiates cryptographic parameters and can provide encryption and server authentication, subject to successful certificate verification and correct configuration.
+
+Key lesson: The client must use a protocol compatible with the service listening on the target port.
+
+Level 16 → 17: Port Scanning and Service Identification
+
+Commands:
+
+nmap -p 31000-32000 localhost
+nmap -sV -p 31000-32000 localhost
+
+Nmap scans specified ports and can attempt to identify the services and versions listening on them.
+
+- "-p" specifies the ports to scan.
+- "-sV" enables service/version detection.
+- "31000-32000" defines the port range.
+- "localhost" identifies the scan target.
+
+The first command checks the specified range; the second requests additional service identification.
+
+Key lesson: Discovering an open port and identifying the application protocol or service are different tasks. Port scans should only be performed on systems where testing is authorised.
+
+Level 17 → 18: Comparing Files
+
+Command:
+
+diff passwords.old passwords.new
+
+The "diff" utility compares two files and reports their differences.
+
+This challenge introduced the value of comparing versions of a file to identify changes instead of manually inspecting every line.
+
+Key lesson: File comparison is a useful technique for auditing configuration changes, identifying modifications, and investigating differences in datasets.
+
+Level 18 → 19: Working with a Restricted SSH Session
+
+Command:
+
+ssh bandit18@bandit.labs.overthewire.org -p 2220 /bin/sh
+
+SSH can be used to request execution of a remote command instead of starting the user's usual interactive login shell. In this example, "/bin/sh" is requested as the remote command.
+
+This technique is relevant when the normal login environment behaves differently from a standard shell. The precise behaviour depends on the server's SSH configuration and account restrictions.
+
+Key lesson: A restricted or customised login environment can affect how a remote session behaves. Understanding which shell or command SSH invokes is important when troubleshooting access.
+
+Level 19 → 20: SetUID Executables
+
+Command:
+
+./bandit20-do cat /etc/bandit_pass/bandit20
+
+The challenge introduced a helper executable intended to run commands with the privileges associated with its SetUID configuration.
+
+The "./" prefix specifies an executable in the current directory. The remaining arguments request a command to run through that helper.
+
+SetUID executables can create security risks when their permissions or implementation allow unintended privileged actions. Their effective privileges depend on the file owner, mode bits, operating system behaviour, and the program's implementation.
+
+Key lesson: Linux permissions govern more than whether a user can read, write, or execute a file. They can also affect the identity under which a process runs.
+
+Technical Lessons Across Levels 10–20
+
+- Distinguish encoding from encryption.
+- Recognise basic substitution ciphers and their limitations.
+- Identify file formats using content rather than relying only on filenames.
+- Understand nested compression and archive extraction.
+- Protect private SSH keys with appropriate file permissions.
+- Distinguish plain TCP connections from TLS sessions.
+- Use port scanning and service detection to investigate authorised targets.
+- Compare files systematically to locate changes.
+- Understand restricted login environments.
+- Recognise the security implications of SetUID executables.
+
+Reflection
+
+These challenges broadened my understanding of Linux command-line workflows, data representation, network services, authentication, and access control.
+
+My next step is to repeat the challenges independently, verify my understanding of the commands, and document the practical evidence and lessons accurately.
+
+Note: This write-up summarises the reported learning notes. Individual commands and results should be independently reproduced before being presented as verified practical evidence.
